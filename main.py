@@ -10,7 +10,7 @@ import steam
 import model
 import utils
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 API_KEY = os.environ.get("API_KEY")
 
 
