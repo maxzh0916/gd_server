@@ -61,7 +61,8 @@ def steam_price_history(api_key: str, app_id: int, hash_name: str):
         return model.Response(success=False, msg=e.msg)
     cleaned_data = []
     volume_24h = 0
-    volume_10d = defaultdict(int)
+    _volume_10d = defaultdict(int)
+    volume_10d = []
     last_dt = datetime.strptime(response["prices"][-1][0].replace(": +0", ":00 +0800"), "%b %d %Y %H:%M %z")
     start_dt = last_dt.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=9)
     # 清洗数据
@@ -74,7 +75,9 @@ def steam_price_history(api_key: str, app_id: int, hash_name: str):
         if last_dt - i[0] < timedelta(hours=24):
             volume_24h += i[1]
         day_key = i[0].strftime("%m-%d")
-        volume_10d[day_key] += i[1]
+        _volume_10d[day_key] += i[1]
+    for key, value in enumerate(_volume_10d.items()):
+        volume_10d.append([key, value])
     result = {"volume_24h": volume_24h, "volume_10d": volume_10d}
     return model.Response(success=True, data=result)
 
