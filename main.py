@@ -76,7 +76,7 @@ def steam_price_history(api_key: str, app_id: int, hash_name: str):
             volume_24h += i[1]
         day_key = i[0].strftime("%m-%d")
         _volume_10d[day_key] += i[1]
-    for key, value in enumerate(_volume_10d.items()):
+    for key, value in _volume_10d.items():
         volume_10d.append([key, value])
     result = {"volume_24h": volume_24h, "volume_10d": volume_10d}
     return model.Response(success=True, data=result)
