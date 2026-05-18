@@ -92,7 +92,7 @@ def buff_price_data(api_key: str, goods_id: str):
         return model.Response(success=False, msg=e.msg)
     result = []
     for i in response["data"]["items"]:
-        result.append(i["price"])
+        result.append(float(i["price"]))
     return model.Response(success=True, data=result)
 
 
