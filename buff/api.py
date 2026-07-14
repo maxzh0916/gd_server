@@ -42,7 +42,7 @@ def get_sell_order(goods_id):
             else:
                 raise BuffAPIError(f"状态码错误，{status_code} - {response}")
         except httpx.TimeoutException:
-            raise BuffAPIError("服务端连接超时")
+            raise BuffAPIError("连接超时")
         except httpx.TransportError:
-            raise BuffAPIError("服务端连接错误")
+            raise BuffAPIError("连接错误")
     raise BuffAPIError("多次重定向后仍无法获取价格数据")

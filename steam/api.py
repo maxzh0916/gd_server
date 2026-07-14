@@ -25,6 +25,8 @@ def get_market_listings():
                 raise SteamAPIError("Cookies无效")
             case 429:
                 raise SteamAPIError("请求次数太多")
+            case 502:
+                raise SteamAPIError("网关错误")
             case _:
                 raise SteamAPIError(f"状态码错误，{status_code} - {response.text}")
         if response["success"]:
@@ -32,9 +34,9 @@ def get_market_listings():
         else:
             raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
     except httpx.TimeoutException:
-        raise SteamAPIError("服务端连接超时")
+        raise SteamAPIError("连接超时")
     except httpx.TransportError:
-        raise SteamAPIError("服务端连接错误")
+        raise SteamAPIError("连接错误")
 
 
 def get_orderbook(app_id: int, hash_name: str):
@@ -52,6 +54,8 @@ def get_orderbook(app_id: int, hash_name: str):
                 raise SteamAPIError(msg="Cookies无效")
             case 429:
                 raise SteamAPIError(msg="请求次数太多")
+            case 502:
+                raise SteamAPIError("网关错误")
             case _:
                 raise SteamAPIError(msg=f"状态码错误，{status_code} - {response.text}")
         if response["success"]:
@@ -59,9 +63,9 @@ def get_orderbook(app_id: int, hash_name: str):
         else:
             raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
     except httpx.TimeoutException:
-        raise SteamAPIError("服务端连接超时")
+        raise SteamAPIError("连接超时")
     except httpx.TransportError:
-        raise SteamAPIError("服务端连接错误")
+        raise SteamAPIError("连接错误")
 
 
 def get_price_history(app_id: int, hash_name: str):
