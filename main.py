@@ -38,8 +38,8 @@ def steam_order_list(api_key: str, app_id: int, hash_name: str):
         response = steam.get_orderbook(app_id, hash_name)
     except steam.SteamAPIError as e:
         return model.Response(success=False, msg=e.msg)
-    sell_order_original = response["data"]["rgCompactSellOrders"][:20]
-    buy_order_original = response["data"]["rgCompactBuyOrders"][:20]
+    sell_order_original = response["data"]["data"]["rgCompactSellOrders"][:20]
+    buy_order_original = response["data"]["data"]["rgCompactBuyOrders"][:20]
     results = {
         "sell_order_list": [[sell_order_original[i] / 100, sell_order_original[i + 1]] for i in
                             range(0, len(sell_order_original), 2)],
