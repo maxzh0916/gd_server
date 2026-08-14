@@ -21,18 +21,20 @@ def get_market_listings():
         match status_code:
             case 200:
                 response = response.json()
+                if response["success"]:
+                    return response
+                else:
+                    raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
             case 400:
                 raise SteamAPIError("Cookies无效")
             case 429:
                 raise SteamAPIError("请求次数太多")
             case 502:
                 raise SteamAPIError("网关错误")
+            case 503:
+                raise SteamAPIError("服务不可用")
             case _:
                 raise SteamAPIError(f"状态码错误，{status_code} - {response.text}")
-        if response["success"]:
-            return response
-        else:
-            raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
     except httpx.TimeoutException:
         raise SteamAPIError("连接超时")
     except httpx.TransportError:
@@ -50,18 +52,20 @@ def get_orderbook(app_id: int, hash_name: str):
         match status_code:
             case 200:
                 response = response.json()
+                if response["data"]["success"]:
+                    return response
+                else:
+                    raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
             case 400:
-                raise SteamAPIError(msg="Cookies无效")
+                raise SteamAPIError("Cookies无效")
             case 429:
-                raise SteamAPIError(msg="请求次数太多")
+                raise SteamAPIError("请求次数太多")
             case 502:
                 raise SteamAPIError("网关错误")
+            case 503:
+                raise SteamAPIError("服务不可用")
             case _:
                 raise SteamAPIError(msg=f"状态码错误，{status_code} - {response.text}")
-        if response["success"]:
-            return response
-        else:
-            raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
     except httpx.TimeoutException:
         raise SteamAPIError("连接超时")
     except httpx.TransportError:
@@ -79,16 +83,20 @@ def get_price_history(app_id: int, hash_name: str):
         match status_code:
             case 200:
                 response = response.json()
+                if response["success"]:
+                    return response
+                else:
+                    raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
             case 400:
-                raise SteamAPIError(msg="Cookies无效")
+                raise SteamAPIError("Cookies无效")
             case 429:
-                raise SteamAPIError(msg="请求次数太多")
+                raise SteamAPIError("请求次数太多")
+            case 502:
+                raise SteamAPIError("网关错误")
+            case 503:
+                raise SteamAPIError("服务不可用")
             case _:
                 raise SteamAPIError(msg=f"状态码错误，{status_code} - {response.text}")
-        if response["success"]:
-            return response
-        else:
-            raise SteamAPIError(f"未知错误，{status_code} - {response.text}")
     except httpx.TimeoutException:
         raise SteamAPIError("服务端连接超时")
     except httpx.TransportError:
