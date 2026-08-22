@@ -83,11 +83,11 @@ def steam_price_history(api_key: str, app_id: int, hash_name: str):
 
 
 @app.get("/buff/price_data")
-def buff_price_data(api_key: str, goods_id: str):
+def buff_price_data(api_key: str, game: str, goods_id: str):
     if api_key != API_KEY:
         return model.Response(success=False, msg="api_key错误")
     try:
-        response = buff.get_sell_order(goods_id)
+        response = buff.get_sell_order(game, goods_id)
     except buff.BuffAPIError as e:
         return model.Response(success=False, msg=e.msg)
     result = []

@@ -16,9 +16,9 @@ _BUFF_302_RETRY_COUNT = 5 if not _E_BUFF_302_RETRY_COUNT else _E_BUFF_302_RETRY_
 client = httpx.Client(base_url="https://buff.163.com", headers=_HEADERS, timeout=_TIME_OUT)
 
 
-def get_sell_order(goods_id):
+def get_sell_order(game, goods_id):
     params = {
-        "game": "dota2",
+        "game": game,
         "goods_id": goods_id,
         "page_num": 1,
         "sort_by": "default",
