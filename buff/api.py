@@ -13,7 +13,6 @@ _E_TIME_OUT = os.environ.get("TIME_OUT")
 _E_BUFF_302_RETRY_COUNT = os.environ.get("BUFF_302_RETRY_COUNT")
 _TIME_OUT = 3 if not _E_TIME_OUT else _E_TIME_OUT
 _BUFF_302_RETRY_COUNT = 5 if not _E_BUFF_302_RETRY_COUNT else _E_BUFF_302_RETRY_COUNT
-client = httpx.Client(base_url="https://buff.163.com", headers=_HEADERS, timeout=_TIME_OUT)
 
 
 def get_sell_order(game, goods_id):
@@ -26,7 +25,12 @@ def get_sell_order(game, goods_id):
     }
     for _ in range(_BUFF_302_RETRY_COUNT):
         try:
-            response = client.get(url=f"/api/market/goods/sell_order", params=params)
+            response = httpx.get(
+                url=f"https://buff.163.com/api/market/goods/sell_order",
+                params=params,
+                headers=_HEADERS,
+                timeout=_TIME_OUT
+            )
             status_code = response.status_code
             if status_code == 302:
                 continue
