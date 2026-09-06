@@ -27,6 +27,13 @@ def update_steam_market_cookies(api_key: str, session_id: str, steam_login_secur
         utils.set_steam_cookies_available(False)
         return model.Response(success=False, msg=e.msg)
 
+@app.get("/cookies/update_buff_cookies")
+def update_buff_cookies(api_key: str, session: str):
+    if api_key != API_KEY:
+        return model.Response(success=False, msg="api_key错误")
+    buff.client.cookies.update({"session": session})
+    return model.Response(success=True)
+
 
 @app.get("/steam/order_list")
 def steam_order_list(api_key: str, app_id: int, hash_name: str):
