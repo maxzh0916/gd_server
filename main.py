@@ -14,6 +14,14 @@ app = FastAPI(docs_url=None, redoc_url=None)
 API_KEY = os.environ.get("API_KEY")
 
 
+@app.get("/status")
+def status(api_key: str):
+    if api_key != API_KEY:
+        return model.Response(success=False, msg="api_key错误")
+    else:
+        return model.Response(success=True)
+
+
 @app.get("/cookies/update_steam_market_cookies")
 def update_steam_market_cookies(api_key: str, session_id: str, steam_login_secure: str):
     if api_key != API_KEY:
@@ -26,6 +34,7 @@ def update_steam_market_cookies(api_key: str, session_id: str, steam_login_secur
     except steam.SteamAPIError as e:
         utils.set_steam_cookies_available(False)
         return model.Response(success=False, msg=e.msg)
+
 
 @app.get("/cookies/update_buff_cookies")
 def update_buff_cookies(api_key: str, session: str):
